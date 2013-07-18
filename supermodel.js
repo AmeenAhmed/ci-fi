@@ -18,17 +18,43 @@ function SuperModel() {
 		}
 	}
 
+	this.errors = [];
+
+
+
 	this.save = function(cb) {
 		console.log(this.__tablename());
 		if(typeof this._id !== undefined) {
-			this.collection().insert(this, function(err) {
+			if(this.$beforeInsert) {
+				this.$beforeInsert();
+			}
+
+			this.collection().insert(SuperModel.onlyProps(this), function(err) {
 				cb(err);
 			});
 		} else {
-			this.collection().save(this, function(err) {
+			this.collection().save(SuperModel.onlyProps(this), function(err) {
 				cb(err);
 			})
 		}
+	}
+}
+
+SuperModel.onlyProps = function(obj) {
+	return JSON.parse(JSON.stringify(obj));
+}
+
+SuperModel.validations = {
+	'unique?': function(attr, obj, cb) {
+		var o = {};
+		o[attr] = obj[attr];
+		this.find(o, function(err, objs) {
+			if(!err && !objs) {
+				cb(true);
+			} else {
+				cb(false);
+			}
+		});
 	}
 }
 

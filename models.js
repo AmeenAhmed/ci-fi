@@ -25,22 +25,23 @@ exports.boot = function() {
 		models[i].__tablename = __tablename;
 
 		var model = models[i];
-		global[modelname] = model;
+		global[inflection.camelize(modelname)] = model;
 		var m = new model();
-		// m.create({
-		// 	'name': 'Ameen',
-		// 	'email': 'ameen.ahmed@ameen.com',
-		// 	'password': 'test123'
-		// });
-		// m.save(function(err) {
-		// 	console.log(err);
-		// });
-
-		model.find(function(err, objs) {
-			console.log(err);
-			console.log(objs);
-
-			objs[0].check();
+		m.create({
+			'name': 'Ameen',
+			'email': 'ameen.ahmed@ameen.com',
+			'password': 'test123'
 		});
+		console.log(m);
+		m.save(function(err) {
+			console.log(err);
+		});
+
+		// model.find(function(err, objs) {
+		// 	console.log(err);
+		// 	console.log(objs);
+
+		// 	objs[0].check();
+		// });
 	}
 }
