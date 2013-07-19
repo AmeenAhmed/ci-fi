@@ -28,8 +28,7 @@ exports.boot = function() {
 		global[inflection.camelize(modelname)] = model;
 		var m = new model();
 		m.create({
-			'name': 'Ameen',
-			'email': 'ameen.ahmed@ameen.com',
+			'email': 'admin@default.com',
 			'password': 'test123'
 		});
 		console.log(m);

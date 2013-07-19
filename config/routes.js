@@ -1,3 +1,4 @@
 module.exports = {
-	'/': 'home.index'
+	'GET /': 'home.index',
+	'POST /signin': 'home.signin'
 }

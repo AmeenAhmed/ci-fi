@@ -1,4 +1,15 @@
 extend ../layouts/application
 	
 block content
-	
+	div.hero
+		div.hero-inner
+			form(action="/signin", method="POST")
+				fieldset
+					legend Sign in
+					div.form-inner
+						div
+							input(type="text", placeholder="Email", name="email").block
+						div
+							input(type="password", placeholder="Password", name="password").block
+						div
+							button(type="submit").btn Submit
