@@ -19,8 +19,9 @@ app.use(function(req, res, next) {
 		var fn = jade.compile(file, {
 			filename: filename
 		});
-		var h = new helpers(req, res);
-		obj = _.extend(h, obj);
+		// var h = new helpers(req, res);
+		// obj = _.extend(h, obj);
+		obj = {};
 		res.end(fn(obj));
 	}
 	next();

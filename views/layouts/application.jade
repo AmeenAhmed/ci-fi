@@ -1,0 +1,26 @@
+!!!5
+html
+	head
+		title Ci-Fi
+
+		link(rel="stylesheet", href="css/bootstrap.min.css")
+		link(rel="stylesheet", href="css/bootstrap-responsive.min.css")
+		link(rel="stylesheet", href="css/app.css")
+		script(src="/js/jquery.min.js")
+	body
+		div.navbar.navbar-inverse
+			div.navbar-inner
+				a.brand Doccify
+		div.hero
+			div.hero-inner
+				form(action="/signin", method="POST")
+					fieldset
+						legend Sign in
+						div.form-inner
+							div
+								input(type="text", placeholder="Email").block
+							div
+								input(type="password", placeholder="Password").block
+							div
+								button(type="submit").btn Submit
+		block content

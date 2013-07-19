@@ -25,13 +25,20 @@ function SuperModel() {
 	this.save = function(cb) {
 		console.log(this.__tablename());
 		if(typeof this._id !== undefined) {
-			if(this.$beforeInsert) {
-				this.$beforeInsert();
-			}
+			var self = this;
 
-			this.collection().insert(SuperModel.onlyProps(this), function(err) {
-				cb(err);
-			});
+			var exec = function() {
+				self.collection().insert(SuperModel.onlyProps(self), function(err) {
+					cb(err);
+				});
+			}
+			if(this.$beforeInsert) {
+				this.$beforeInsert(function(b) {
+					if(b) {
+						exec();
+					}
+				});
+			}
 		} else {
 			this.collection().save(SuperModel.onlyProps(this), function(err) {
 				cb(err);
