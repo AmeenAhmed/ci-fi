@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 		});
 		// var h = new helpers(req, res);
 		// obj = _.extend(h, obj);
-		obj = {};
+		// obj = {};
 		res.end(fn(obj));
 	}
 	next();
@@ -43,10 +43,10 @@ for(var key in routes) {
 	var method = ((key.match('GET ') ||  key.match('POST ') ||
 					key.match('PUT ') ||  key.match('DELETE ')) || ['all'] )[0];
 	var uri;
-	console.log(method);
+	// console.log(method);
 	
 	uri = key.replace(method, '');
-	console.log(uri);
+	// console.log(uri);
 
 	var dest = routes[key].split('.');
 	var controller = require('./controllers/' + dest[0] + '.js');

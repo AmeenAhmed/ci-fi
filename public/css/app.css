@@ -17,3 +17,28 @@
 	padding: 20px;
 	border-radius: 8px;
 }
+
+.center {
+	text-align: center;
+}
+
+.container {
+	margin: 0 auto;
+}
+
+.pull-up {
+	margin-top: -45px;
+}
+
+.section {
+	margin: 20px 40px;
+}
+
+hr {
+	margin: 10px;
+}
+
+/*.inline {
+	display: inline-block;
+	margin-right: 80%;
+}*/

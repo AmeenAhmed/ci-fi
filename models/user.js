@@ -1,4 +1,5 @@
 var bcrypt = require('bcrypt');
+var _ = require('underscore');
 
 
 function user() {
@@ -6,13 +7,13 @@ function user() {
 	this.$beforeInsert = function(cb) {
 		var salt = bcrypt.genSaltSync(10);
 		var hash = bcrypt.hashSync(this.password, salt);
-		console.log('Before hash ' + this.password);
+		// console.log('Before hash ' + this.password);
 
 		this.password = hash;
-		console.log('After hash ' + this.password);
+		// console.log('After hash ' + this.password);
 
 		user.find({'email': this.email}, function(err, objs) {
-			console.log(err, objs);
+			// console.log(err, objs);
 			if(!err && !objs.length) {
 				cb(true);
 			} else {
@@ -37,10 +38,15 @@ function user() {
 
 var SuperModel = require('../supermodel');
 
-user.prototype = new SuperModel();
+var $super = _.clone(SuperModel.instanceMethods)
+user.prototype = $super;
 
-for(var item in SuperModel) {
-	user[item] = SuperModel[item];
+user.prototype.__modelname = 'User';
+
+user.prototype.__tablename = 'users';
+
+for(var item in SuperModel.classMethods) {
+	user[item] = SuperModel.classMethods[item];
 }
 
 module.exports = user;

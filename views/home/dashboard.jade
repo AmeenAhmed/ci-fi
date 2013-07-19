@@ -1,0 +1,31 @@
+extend ../layouts/application
+	
+block content
+	div.container
+		div
+			h3 Projects
+			a(href="/projects/new").btn.btn-success.pull-right.pull-up Create new
+
+		hr
+		div
+			- if(projects.length === 0)
+				div.alert.center No projects yet!
+			- else
+				div.thumbnail.span2
+					div.caption.center
+						h4
+							- for(var i=0; i<projects.length; i++) {
+								=projects[i].name
+							- }
+						hr
+					div.center
+						h5 Build Status 
+							- if (projects.status)
+								- if (project.status === 'passing')
+									span.label.label-success Passing
+								- else if (project.status === 'pending')
+									span.label.label-info Pending
+								- else if (project.status === 'failed')
+									span.label.label-info Failed
+							- else
+								span.label.label-default Unknown

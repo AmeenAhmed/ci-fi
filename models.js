@@ -17,24 +17,22 @@ exports.boot = function() {
 		}
 		var modelname = filename.replace('.js', '');
 		models[i] = require(modelPath + '/' + filename);
-		models[i].prototype.__modelname = modelname;
-		function __tablename() {
-			return inflection.pluralize(modelname);
-		} 
-		models[i].prototype.__tablename = __tablename;
-		models[i].__tablename = __tablename;
+		
+		models[i].__tablename = inflection.pluralize(modelname);
 
 		var model = models[i];
 		global[inflection.camelize(modelname)] = model;
-		var m = new model();
-		m.create({
-			'email': 'admin@default.com',
-			'password': 'test123'
-		});
-		console.log(m);
-		m.save(function(err) {
-			console.log(err);
-		});
+
+		// console.log(global[inflection.camelize(modelname)])
+		// var m = new model();
+		// m.create({
+		// 	'email': 'admin@default.com',
+		// 	'password': 'test123'
+		// });
+		// // console.log(m);
+		// m.save(function(err) {
+		// 	// console.log(err);
+		// });
 
 		// model.find(function(err, objs) {
 		// 	console.log(err);
