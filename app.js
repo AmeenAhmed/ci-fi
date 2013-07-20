@@ -59,3 +59,4 @@ for(var key in routes) {
 GLOBAL.sessions = {};
 
 app.listen(3000);
+

@@ -1,0 +1,12 @@
+extend ../layouts/application
+	
+block content
+	div.container
+		div
+			h3 #{project.name}
+			button(id="#{project._id}").btn.btn-success.build.pull-right.pull-up Start build
+		hr
+
+		div.output
+
+

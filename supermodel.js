@@ -40,8 +40,8 @@ SuperModel.instanceMethods.save = function(cb) {
 		var self = this;
 
 		var exec = function() {
-			self.collection().insert(onlyProps(self), function(err) {
-				cb(err);
+			self.collection().insert(onlyProps(self), function(err, obj) {
+				cb(err, obj[0]._id);
 			});
 		}
 		if(this.$beforeInsert) {
@@ -55,6 +55,7 @@ SuperModel.instanceMethods.save = function(cb) {
 		}
 	} else {
 		this.collection().save(onlyProps(this), function(err) {
+
 			cb(err);
 		})
 	}
@@ -94,7 +95,9 @@ SuperModel.classMethods.toObjects = function(obj) {
 	    }
 	    return tempArray;
 	} else {
-		return new this(obj);
+		var o = new this();
+		o.create(obj);
+		return o;
 	}
 }
 
@@ -118,8 +121,7 @@ SuperModel.classMethods.findById = function(id, cb) {
 	var _id = this.toObjectID(id);
 
 	db.collection(this.__tablename).findById(_id, function(err, obj) {
-		_obj = this.toObjects(_obj);
-
+		var _obj = self.toObjects(obj);
 		cb(err, _obj);
 	});
 

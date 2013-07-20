@@ -63,11 +63,13 @@ function beforeFilter(req, res) {
 	return true;
 }
 
+
 function getCurrentUserID(req, res) {
 	var session_key = req.cookies['session-key'];
 	// console.log(sessions);
 	return GLOBAL.sessions[session_key];	
 }
+
 
 
 exports.dashboard = function(req, res) {
@@ -78,7 +80,8 @@ exports.dashboard = function(req, res) {
 			if(!err) {
 				template.projects = projects;
 			}
-			// console.log(template);
+			
+			
 			res.render('home.dashboard', template);	
 		});	
 	}
