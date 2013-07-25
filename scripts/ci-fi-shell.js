@@ -44,7 +44,7 @@ if(cluster.isMaster) {
 		console.log('Got a message to run ', obj, ' in server');
 		var worker = workers[currentWorker];
 
-		cluster.workers[worker].send('run ' + obj.id);
+		cluster.workers[worker].send('run ' + obj.build_id);
 
 		currentWorker ++;
 
@@ -82,7 +82,6 @@ if(cluster.isMaster) {
 			db.collection('projects').findById(id, function(err, project) {
 				var repo = project.repo;
 				var name = project.name;
-				shell.mkdir('repos/' + name);
 				var clone = shell.exec('git clone ' + repo + ' repos/' + name, {async: true});
 				clone.stdout.on('data', function(data) {
 					console.log('stdout: ' + data);
@@ -92,29 +91,55 @@ if(cluster.isMaster) {
 				});
 			});
 		} else if(msg.match(/run [a-z0-9]+/g)) {
-			console.log('running');
+			console.log('build');
 			var id = db.ObjectID.createFromHexString(msg.replace(/run /g, ''));
-			db.collection('projects').findById(id, function(err, project) {
-				console.log(project);
-				shell.cd('repos/' + project.name);
-				var commands = project.scripts.split('\r\n');
-				for(var i=0; i<commands.length; i++) {
-					project.output = '';
-					shell.exec(commands[i], function(code, output) {
-						if(code === 0) {
-							project.status = 'passing';
-							project.output += '<br/>' + output.replace(/\n/g, '<br/>');
-							db.collection('projects').save(project, function(err) {
-								if(err) {
-									console.log('Status save error');	
-								}
-								
-							});
-						}
+			db.collection('builds').findById(id, function(err, build) {
+				console.log(build);
+				var project_id = build.project_id;
+				db.collection('projects').findById(project_id, function(err, project) {
+					console.log(project);
+					shell.cd('repos/' + project.name);
+					var commands = project.scripts.split('\r\n');
+					var statusCode = 0;
+					var l = commands.length;
+					var cs = [];
+					for(var i=0; i<commands.length; i++) {
+						cs[i] = shell.exec(commands[i]);
+						var output = cs[i].output.toString('ascii');
+						build.output += '<br/>' + output.replace(/\n/g, '<br/>');
+						db.collection('builds').save(build, function(err) {
+							if(err) {
+								console.log('Status save error');	
+							}
+						});
 						console.log(output);
-					});	
-				}
-				
+
+						if(cs[i].code !== 0) {
+							statusCode = cs[i].code; 
+						}
+					}
+					build.status = 'complete';
+					build.endTime = new Date();
+					if(statusCode === 0) {
+						build.build_status = 'passing';
+					} else {
+						build.build_status = 'failed';
+					}
+
+					project.status = build.build_status;
+
+					db.collection('projects').save(project, function(err) {
+						if(err) {
+							console.log('Project save error');
+						}
+					});
+
+					db.collection('builds').save(build, function(err) {
+						if(err) {
+							console.log('Build Save error');
+						}
+					});
+				});
 			});
 		}
 	});

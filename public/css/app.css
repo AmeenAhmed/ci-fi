@@ -43,8 +43,31 @@ hr {
 	font: 12pt monospace;
 	overflow: scroll;
 	color: #fff;
+	line-height: 1.5em;
+	padding: 12px;
+	margin: 20px;
 }
 
+.link {
+	display: inline-block;
+	margin: 12px;
+}
+
+.button {
+	text-align: center;
+}
+
+.t_bold {
+	font-weight: bold;
+}
+
+.t_green {
+	color: #62c462;
+}
+
+.t_red {
+	color: #b94a48;
+}
 /*.inline {
 	display: inline-block;
 	margin-right: 80%;

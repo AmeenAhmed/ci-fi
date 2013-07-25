@@ -36,9 +36,9 @@ SuperModel.instanceMethods.errors = [];
 
 SuperModel.instanceMethods.save = function(cb) {
 	// console.log(this.__tablename());
-	if(typeof this._id !== undefined) {
+	if(this._id === undefined) {
 		var self = this;
-
+		console.log('Insert called!')
 		var exec = function() {
 			self.collection().insert(onlyProps(self), function(err, obj) {
 				cb(err, obj[0]._id);
@@ -54,6 +54,8 @@ SuperModel.instanceMethods.save = function(cb) {
 			exec();
 		}
 	} else {
+
+		console.log('Save called! id = ', this._id);
 		this.collection().save(onlyProps(this), function(err) {
 
 			cb(err);
@@ -104,7 +106,7 @@ SuperModel.classMethods.toObjects = function(obj) {
 SuperModel.classMethods.find = function(obj, cb) {
 	if(typeof obj === 'function') {
 		cb = obj;
-		obj = undefined;
+		obj = {};
 	}
 
 	var self = this;

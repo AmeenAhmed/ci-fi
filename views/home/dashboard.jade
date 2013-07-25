@@ -3,8 +3,10 @@ extend ../layouts/application
 block content
 	div.container
 		div
-			h3 Projects
-			a(href="/projects/new").btn.btn-success.pull-right.pull-up Create new
+			h3.link Projects 
+			h3.link 
+				a(href="/builds") Builds
+			a(href="/projects/new").btn.btn-success.pull-right Create new
 
 		hr
 		div
@@ -28,6 +30,8 @@ block content
 										span.label.label-important Failed
 								- else
 									span.label.label-default Unknown
-						
-						a(href="/build/#{projects[i]._id}").btn.btn-primary Run build
+						div.button
+							a(href="/build/#{projects[i]._id}").btn.btn-primary Run build
+						div.button
+							a(href="/edit/#{projects[i]._id}").btn.btn-primary Edit
 				- }

@@ -1,0 +1,43 @@
+extend ../layouts/application
+	
+block content
+	div.container
+		div
+			h3.link 
+				a(href="/dashboard") Projects
+			h3.link Builds
+			hr
+			- if(builds.length)
+				table.table
+					thead
+						th Project
+						th Build Time
+						th Status
+					tbody
+							
+
+						- for(var i=0; i<builds.length; i++) {
+							color = ''
+							label = ''
+							if builds[i].status === 'passing'
+								color = 'success'
+								label = 'label-success'
+							else if builds[i].status === 'pending'
+								color = 'warning'
+								label = 'label-warning'
+							else if builds[i].status === 'failed'
+								color = 'error'
+								label = 'label-important'
+
+							tr(class='#{color}')
+								td 
+									=builds[i].project
+								td 
+									=builds[i].buildTime
+								td 
+									span(class="label #{label}")
+										=builds[i].status
+
+						- }
+			- else
+				div.alert.center No builds to show
